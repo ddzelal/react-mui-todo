@@ -15,6 +15,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 // import Paper from '@mui/material/Paper';
+import Checkbox from "@mui/material/Checkbox";
+import Stack from "@mui/material/Stack";
+// import Button from "@mui/material/Button";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -23,6 +26,8 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.text.secondary,
 }));
+
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
 
 ////OVO JE SVE ZA TABEKU
 
@@ -46,10 +51,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-
-
-
-
 export default function CreateTask() {
   const [object, setOject] = useState({
     TaskName: "",
@@ -58,6 +59,7 @@ export default function CreateTask() {
   });
 
   const [task, setTask] = useState([]);
+  const [empty, setEmpty] = useState();
 
   function createObject(value, inputType) {
     setOject({ ...object, [inputType]: value });
@@ -65,6 +67,14 @@ export default function CreateTask() {
 
   function addTask() {
     setTask([...task, object]);
+    setEmpty(() => "");
+  }
+
+  function removeTask(i){
+    let remArr = [...task]
+     let novi = remArr.filter(el =>  el !== task[i] )
+    
+     setTask(novi)
   }
 
   return (
@@ -82,7 +92,7 @@ export default function CreateTask() {
                 autoComplete="off"
               >
                 <TextField
-                  value={object.TaskName}
+                  // value={empty}
                   onChange={(e) => {
                     createObject(e.target.value, "TaskName");
                   }}
@@ -91,6 +101,7 @@ export default function CreateTask() {
                   variant="filled"
                 />
                 <TextField
+                  // value={empty}
                   onChange={(e) => {
                     createObject(e.target.value, "Description");
                   }}
@@ -99,6 +110,7 @@ export default function CreateTask() {
                   variant="filled"
                 />
                 <TextField
+                  // value={empty}
                   onChange={(e) => {
                     createObject(e.target.value, "Data");
                   }}
@@ -119,33 +131,29 @@ export default function CreateTask() {
                   <TableRow>
                     <StyledTableCell>Task-Name</StyledTableCell>
                     <StyledTableCell align="right"></StyledTableCell>
-                    <StyledTableCell align="right">
-                      
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      Description
-                    </StyledTableCell>
-                    <StyledTableCell align="right">
-                      Data
-                    </StyledTableCell>
+                    <StyledTableCell align="right"></StyledTableCell>
+                    <StyledTableCell align="right">Description</StyledTableCell>
+                    <StyledTableCell align="right">Data</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {task.map((e) => (
+                  {task.map((e , i) => (
                     <StyledTableRow key={e.TaskName}>
                       <StyledTableCell component="th" scope="row">
                         {e.TaskName}
+                        <Checkbox {...label} defaultChecked />
+                        <Stack direction="row" spacing={2}>
+                        <Button onClick={()=> {removeTask(i)}} variant="outlined" color="error">
+                          Delete 
+                        </Button>
+                      </Stack>
                       </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {""}
-                      </StyledTableCell>
+                      <StyledTableCell align="right">{""}</StyledTableCell>
                       <StyledTableCell align="right"></StyledTableCell>
                       <StyledTableCell align="right">
                         {e.Description}
                       </StyledTableCell>
-                      <StyledTableCell align="right">
-                        {e.Data}
-                      </StyledTableCell>
+                      <StyledTableCell align="right">{e.Data}</StyledTableCell>
                     </StyledTableRow>
                   ))}
                 </TableBody>
