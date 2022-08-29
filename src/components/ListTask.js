@@ -1,4 +1,7 @@
-import * as React from "react";
+import React from 'react'
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2'
+// import { useState } from 'react';
+// import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -18,6 +21,8 @@ import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
 import Stack from "@mui/material/Stack";
 // import Button from "@mui/material/Button";
+
+export default function ListTask() {
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -51,92 +56,33 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-export default function CreateTask() {
-  const [object, setOject] = useState({
-    TaskName: "",
-    Description: "",
-    Data: "",
-  });
 
-  const [task, setTask] = useState([]);
-  const [empty, setEmpty] = useState();
 
-  function createObject(value, inputType) {
-    setOject({ ...object, [inputType]: value });
-  }
-
-  function addTask() {
-    setTask([...task, object]);
-    setEmpty(() => "");
-  }
-
-  function removeTask(i){
-    let remArr = [...task]
-     let novi = remArr.filter(el =>  el !== task[i] )
+    function addTask() {
+        setTask([...task, object]);
+        setEmpty(() => "");
+      }
     
-     setTask(novi)
-  }
+      function removeTask(i){
+        let remArr = [...task]
+         let novi = remArr.filter(el =>  el !== task[i] )
+        
+         setTask(novi)
+      }
 
-  const [finishtask, setFinishTask] = useState([])
-
-  function checkBox(e , id , dis){
-    if(e === true){
-      setFinishTask([...finishtask , task[id]])
-      
-      
-    }
+      const [empty, setEmpty] = useState();
+      const [task, setTask] = useState([]);
+      const [object, setOject] = useState({
+        TaskName: "",
+        Description: "",
+        Data: "",
+      });
 
     
-  }
-
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container spacing={2} columns={16}>
-        <Grid xs={8}>
-          <Item>
-            <Grid container direction="column">
-              <Box
-                component="form"
-                sx={{
-                  "& > :not(style)": { m: 1, width: "75ch" },
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <TextField
-                  // value={empty}
-                  onChange={(e) => {
-                    createObject(e.target.value, "TaskName");
-                  }}
-                  id="filled-basic"
-                  label="Task-Name"
-                  variant="filled"
-                />
-                <TextField
-                  // value={empty}
-                  onChange={(e) => {
-                    createObject(e.target.value, "Description");
-                  }}
-                  id="filled-basic"
-                  label="Description"
-                  variant="filled"
-                />
-                <TextField
-                  // value={empty}
-                  onChange={(e) => {
-                    createObject(e.target.value, "Data");
-                  }}
-                  id="filled-basic"
-                  label="Data"
-                  variant="filled"
-                />
-                <Button onClick={() => addTask()}>ADD TASK</Button>
-              </Box>
-            </Grid>
-          </Item>
-        </Grid>
-        <Grid xs={8}>
+    <Grid2 container >
+    <Grid xs={8}>
           <Item>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -154,7 +100,7 @@ export default function CreateTask() {
                     <StyledTableRow key={e.TaskName}>
                       <StyledTableCell component="th" scope="row">
                         {e.TaskName}
-                        <Checkbox {...label}  onChange={(e) => {checkBox(e.target.checked , i , e.target.checked)}}/>
+                        <Checkbox {...label} defaultChecked />
                         <Stack direction="row" spacing={2}>
                         <Button onClick={()=> {removeTask(i)}} variant="outlined" color="error">
                           Delete 
@@ -174,7 +120,6 @@ export default function CreateTask() {
             </TableContainer>
           </Item>
         </Grid>
-      </Grid>
-    </Box>
-  );
+    </Grid2>
+  )
 }
