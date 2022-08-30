@@ -18,6 +18,7 @@ import TableRow from "@mui/material/TableRow";
 import Checkbox from "@mui/material/Checkbox";
 import Stack from "@mui/material/Stack";
 // import Button from "@mui/material/Button";
+import ButtonBase from '@mui/material/ButtonBase';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -60,6 +61,7 @@ export default function CreateTask() {
 
   const [task, setTask] = useState([]);
   const [empty, setEmpty] = useState();
+  const [disab, setDisab] = useState(false)
 
   function createObject(value, inputType) {
     setOject({ ...object, [inputType]: value });
@@ -79,10 +81,12 @@ export default function CreateTask() {
 
   const [finishtask, setFinishTask] = useState([])
 
-  function checkBox(e , id , dis){
+  function checkBox(e , id , disabled){
+      
+    
+    
     if(e === true){
       setFinishTask([...finishtask , task[id]])
-      
       
     }
 
@@ -154,7 +158,8 @@ export default function CreateTask() {
                     <StyledTableRow key={e.TaskName}>
                       <StyledTableCell component="th" scope="row">
                         {e.TaskName}
-                        <Checkbox {...label}  onChange={(e) => {checkBox(e.target.checked , i , e.target.checked)}}/>
+                        <Checkbox {...label}  
+                          onChange={(e) => {checkBox(e.target.checked , i , e.target.disabled)}}/>
                         <Stack direction="row" spacing={2}>
                         <Button onClick={()=> {removeTask(i)}} variant="outlined" color="error">
                           Delete 
